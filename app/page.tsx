@@ -1,5 +1,6 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, ChevronLeft, Check, Send, Mail, Phone, Sparkles } from 'lucide-react';
 
 const BrandBriefForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -72,18 +73,18 @@ const BrandBriefForm = () => {
     localStorage.setItem('brandBriefData_3b', JSON.stringify(formData));
   }, [formData]);
 
-  const updateField = (field, value) => {
+  const updateField = (field: string, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const updateArrayField = (field, index, value) => {
+  const updateArrayField = (field: string, index: number, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: prev[field].map((item, i) => i === index ? value : item)
+      [field]: prev[field as keyof typeof prev].map((item: any, i: number) => i === index ? value : item)
     }));
   };
 
-  const updateDeliverables = (key, value) => {
+  const updateDeliverables = (key: string, value: any) => {
     setFormData(prev => ({
       ...prev,
       deliverables: { ...prev.deliverables, [key]: value }
@@ -162,7 +163,7 @@ Brands to Avoid: ${formData.dislikedBrands}
 7. DELIVERABLES
 ────────────────────────
 ${Object.entries(formData.deliverables).filter(([k, v]) => v && k !== 'other').map(([k]) => {
-  const labels = {
+  const labels: Record<string, string> = {
     logo: 'Logo',
     brandGuidelines: 'Brand Guidelines',
     businessCard: 'Business Card',
@@ -240,7 +241,7 @@ Building brands as systems
                 value={formData.description}
                 onChange={(e) => updateField('description', e.target.value)}
                 placeholder="Describe what your brand does and what makes it unique..."
-                rows="4"
+                rows={4}
               />
             </div>
 
@@ -297,7 +298,7 @@ Building brands as systems
                 value={formData.vision}
                 onChange={(e) => updateField('vision', e.target.value)}
                 placeholder="Your aspirational future state..."
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -308,7 +309,7 @@ Building brands as systems
                 value={formData.mission}
                 onChange={(e) => updateField('mission', e.target.value)}
                 placeholder="The problem you solve and value you create..."
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -385,7 +386,7 @@ Building brands as systems
                 value={formData.targetInterests}
                 onChange={(e) => updateField('targetInterests', e.target.value)}
                 placeholder="What motivates them? What are their habits and preferences?"
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -396,7 +397,7 @@ Building brands as systems
                 value={formData.painPoints}
                 onChange={(e) => updateField('painPoints', e.target.value)}
                 placeholder="Describe their challenges and your solution..."
-                rows="3"
+                rows={3}
               />
             </div>
           </div>
@@ -432,7 +433,7 @@ Building brands as systems
                 value={formData.competitorStrengths}
                 onChange={(e) => updateField('competitorStrengths', e.target.value)}
                 placeholder="What are they doing well?"
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -442,7 +443,7 @@ Building brands as systems
                 value={formData.competitorWeaknesses}
                 onChange={(e) => updateField('competitorWeaknesses', e.target.value)}
                 placeholder="Where do they fall short?"
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -453,7 +454,7 @@ Building brands as systems
                 value={formData.uniqueness}
                 onChange={(e) => updateField('uniqueness', e.target.value)}
                 placeholder="Your unique selling proposition..."
-                rows="3"
+                rows={3}
               />
             </div>
           </div>
@@ -475,7 +476,7 @@ Building brands as systems
                 value={formData.personality}
                 onChange={(e) => updateField('personality', e.target.value)}
                 placeholder="Professional, innovative, trustworthy..."
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -486,7 +487,7 @@ Building brands as systems
                 value={formData.voiceTone}
                 onChange={(e) => updateField('voiceTone', e.target.value)}
                 placeholder="Formal, conversational, inspiring..."
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -553,7 +554,7 @@ Building brands as systems
                 value={formData.inspirationBrands}
                 onChange={(e) => updateField('inspirationBrands', e.target.value)}
                 placeholder="List brands or describe visual styles you like..."
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -564,7 +565,7 @@ Building brands as systems
                 value={formData.dislikedBrands}
                 onChange={(e) => updateField('dislikedBrands', e.target.value)}
                 placeholder="Help us understand what you don't want..."
-                rows="3"
+                rows={3}
               />
             </div>
           </div>
@@ -580,155 +581,33 @@ Building brands as systems
             </div>
 
             <div className="deliverables-grid">
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.logo}
-                  onChange={(e) => updateDeliverables('logo', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Logo</div>
-                  <div className="card-desc">Brand mark & wordmark</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.logo && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.brandGuidelines}
-                  onChange={(e) => updateDeliverables('brandGuidelines', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Brand Guidelines</div>
-                  <div className="card-desc">Complete style guide</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.brandGuidelines && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.businessCard}
-                  onChange={(e) => updateDeliverables('businessCard', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Business Card</div>
-                  <div className="card-desc">Professional cards</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.businessCard && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.letterhead}
-                  onChange={(e) => updateDeliverables('letterhead', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Letterhead</div>
-                  <div className="card-desc">Stationery design</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.letterhead && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.envelope}
-                  onChange={(e) => updateDeliverables('envelope', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Envelope</div>
-                  <div className="card-desc">Branded envelopes</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.envelope && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.socialMedia}
-                  onChange={(e) => updateDeliverables('socialMedia', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Social Media</div>
-                  <div className="card-desc">Templates & assets</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.socialMedia && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.patches}
-                  onChange={(e) => updateDeliverables('patches', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Patches/Stickers</div>
-                  <div className="card-desc">Branded merchandise</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.patches && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.website}
-                  onChange={(e) => updateDeliverables('website', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Website Design</div>
-                  <div className="card-desc">Digital presence</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.website && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.packaging}
-                  onChange={(e) => updateDeliverables('packaging', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Packaging</div>
-                  <div className="card-desc">Product packaging</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.packaging && <Check size={18} />}
-                </div>
-              </label>
-
-              <label className="deliverable-card">
-                <input
-                  type="checkbox"
-                  checked={formData.deliverables.signage}
-                  onChange={(e) => updateDeliverables('signage', e.target.checked)}
-                />
-                <div className="card-content">
-                  <div className="card-title">Signage</div>
-                  <div className="card-desc">Environmental graphics</div>
-                </div>
-                <div className="card-check">
-                  {formData.deliverables.signage && <Check size={18} />}
-                </div>
-              </label>
+              {[
+                { key: 'logo', title: 'Logo', desc: 'Brand mark & wordmark' },
+                { key: 'brandGuidelines', title: 'Brand Guidelines', desc: 'Complete style guide' },
+                { key: 'businessCard', title: 'Business Card', desc: 'Professional cards' },
+                { key: 'letterhead', title: 'Letterhead', desc: 'Stationery design' },
+                { key: 'envelope', title: 'Envelope', desc: 'Branded envelopes' },
+                { key: 'socialMedia', title: 'Social Media', desc: 'Templates & assets' },
+                { key: 'patches', title: 'Patches/Stickers', desc: 'Branded merchandise' },
+                { key: 'website', title: 'Website Design', desc: 'Digital presence' },
+                { key: 'packaging', title: 'Packaging', desc: 'Product packaging' },
+                { key: 'signage', title: 'Signage', desc: 'Environmental graphics' }
+              ].map((item) => (
+                <label key={item.key} className="deliverable-card">
+                  <input
+                    type="checkbox"
+                    checked={formData.deliverables[item.key as keyof typeof formData.deliverables] as boolean}
+                    onChange={(e) => updateDeliverables(item.key, e.target.checked)}
+                  />
+                  <div className="card-content">
+                    <div className="card-title">{item.title}</div>
+                    <div className="card-desc">{item.desc}</div>
+                  </div>
+                  <div className="card-check">
+                    {formData.deliverables[item.key as keyof typeof formData.deliverables] && '✓'}
+                  </div>
+                </label>
+              ))}
             </div>
 
             <div className="form-group">
@@ -758,7 +637,7 @@ Building brands as systems
                 value={formData.goals}
                 onChange={(e) => updateField('goals', e.target.value)}
                 placeholder="What do you want to achieve? What does success look like?"
-                rows="4"
+                rows={4}
               />
             </div>
 
@@ -789,7 +668,7 @@ Building brands as systems
                 value={formData.additionalNotes}
                 onChange={(e) => updateField('additionalNotes', e.target.value)}
                 placeholder="Anything else we should know?"
-                rows="4"
+                rows={4}
               />
             </div>
           </div>
@@ -802,7 +681,7 @@ Building brands as systems
 
   return (
     <div className="brand-brief-container">
-      <style>{`
+      <style jsx>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         * {
@@ -823,7 +702,6 @@ Building brands as systems
           position: relative;
         }
 
-        /* Animated background pattern */
         .brand-brief-container::before {
           content: '';
           position: fixed;
@@ -838,7 +716,6 @@ Building brands as systems
           z-index: 0;
         }
 
-        /* Header with logo */
         .header {
           position: relative;
           z-index: 10;
@@ -856,7 +733,6 @@ Building brands as systems
           animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* 3B Studio Logo Placeholder - Replace with actual logo */
         .logo {
           width: 180px;
           height: 80px;
@@ -873,15 +749,6 @@ Building brands as systems
           position: relative;
           overflow: hidden;
         }
-
-        /* Add your actual logo as background image:
-        .logo {
-          background-image: url('YOUR_LOGO_URL_HERE');
-          background-size: contain;
-          background-repeat: no-repeat;
-          background-position: center;
-        }
-        */
 
         .logo::after {
           content: '';
@@ -933,7 +800,6 @@ Building brands as systems
           to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Progress indicator */
         .progress-container {
           max-width: 1200px;
           margin: 0 auto;
@@ -1043,7 +909,6 @@ Building brands as systems
           color: #666;
         }
 
-        /* Form card */
         .form-card {
           max-width: 800px;
           margin: 0 auto 60px;
@@ -1110,7 +975,6 @@ Building brands as systems
           margin: 40px 0;
         }
 
-        /* Form elements */
         .form-group {
           margin-bottom: 28px;
         }
@@ -1176,7 +1040,6 @@ Building brands as systems
           margin-bottom: 12px;
         }
 
-        /* Deliverables grid */
         .deliverables-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -1208,7 +1071,6 @@ Building brands as systems
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
-        .deliverable-card input:checked + .card-content ~ .card-check,
         .deliverable-card:has(input:checked) {
           border-color: #6D5BD0;
           background: rgba(109, 91, 208, 0.05);
@@ -1240,6 +1102,7 @@ Building brands as systems
           justify-content: center;
           transition: all 0.3s ease;
           color: white;
+          font-weight: bold;
         }
 
         .deliverable-card:has(input:checked) .card-check {
@@ -1247,7 +1110,6 @@ Building brands as systems
           border-color: #6D5BD0;
         }
 
-        /* Navigation buttons */
         .button-container {
           display: flex;
           justify-content: space-between;
@@ -1327,7 +1189,6 @@ Building brands as systems
           gap: 8px;
         }
 
-        /* Footer */
         .footer {
           text-align: center;
           padding: 60px 20px 40px;
@@ -1369,7 +1230,6 @@ Building brands as systems
           background: rgba(109, 91, 208, 0.05);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
           .header {
             padding: 32px 20px 48px;
@@ -1469,7 +1329,7 @@ Building brands as systems
                 onClick={() => setCurrentStep(index)}
               >
                 <div className="step-dot">
-                  {index < currentStep ? <Check size={18} strokeWidth={3} /> : step.number}
+                  {index < currentStep ? '✓' : step.number}
                 </div>
                 <div className="step-dot-label">{step.title}</div>
               </div>
@@ -1487,26 +1347,22 @@ Building brands as systems
             onClick={prevStep}
             disabled={currentStep === 0}
           >
-            <ChevronLeft size={18} />
-            Previous
+            ← Previous
           </button>
 
           {currentStep < steps.length - 1 ? (
             <button className="btn-next" onClick={nextStep}>
-              Next
-              <ChevronRight size={18} />
+              Next →
             </button>
           ) : (
             <button className="btn-submit" onClick={handleSubmit}>
-              Submit Brief
-              <Send size={18} />
+              Submit Brief →
             </button>
           )}
         </div>
 
         <div className="auto-save-indicator">
-          <Sparkles size={16} />
-          Auto-saved
+          ✨ Auto-saved
         </div>
       </div>
 
@@ -1514,12 +1370,10 @@ Building brands as systems
         <p className="footer-tagline">Building brands as systems</p>
         <div className="footer-contact">
           <a href="mailto:3bsssh@gmail.com">
-            <Mail size={16} />
-            3bsssh@gmail.com
+            ✉ 3bsssh@gmail.com
           </a>
           <a href="tel:+9647850800280">
-            <Phone size={16} />
-            +964 785 080 0280
+            ☎ +964 785 080 0280
           </a>
         </div>
       </div>
